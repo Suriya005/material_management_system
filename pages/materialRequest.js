@@ -2,7 +2,7 @@ import React from "react";
 import DefaultLayout from "../components/layouts/DefaultLayout";
 import { BsSearch } from "react-icons/bs";
 
-export default function materialRent() {
+export default function materialRequest() {
   return (
     <DefaultLayout>
       <div>
@@ -10,23 +10,33 @@ export default function materialRent() {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="flex mb-2">
-          <div className="flex basis-1/2">
-            <span>รายการวัสดุทั้งหมด</span>
+          <div className="flex basis-1/4">
+            <span>คำร้อง เบิก/ยืม วัสดุทั้งหมด</span>
           </div>
-          <div className="flex basis-1/2">
-            {/* search input */}
-            <input
-              type="text"
-              className="w-full outline-none border-none drop-shadow-lg rounded-l ml-2 px-2 py-1  bg-gray-100"
-              placeholder="Search"
-            />
-            <button className="flex justify-center items-center drop-shadow-lg mr-1 p-1 bg-blue-500 hover:bg-blue-700 hover:text-white rounded-r">
-              <BsSearch></BsSearch>
-            </button>
+          <div className="flex basis-3/4 justify-end">
+            <div className="flex justify-center items-center">
+              <select className="w-full outline-none border-solid border-2 rounded-md border-black mx-2 px-2 shadow-md">
+                <option>คำร้อง เบิก/ยืม วัสดุทั้งหมด</option>
+                <option>คำร้อง ล่าสุด</option>
+              </select>
+            </div>
+            <div className="flex justify-center items-center">
+              {/* search input */}
+              <div className="flex  mx-2">
+                <input
+                  type="text"
+                  className="w-full outline-none border-none drop-shadow-lg rounded-l ml-2 px-2 bg-gray-100"
+                  placeholder="Search"
+                />
+                <button className="flex justify-center items-center drop-shadow-lg mr-1 p-1 bg-blue-500 hover:bg-blue-700 hover:text-white rounded-r">
+                  <BsSearch></BsSearch>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <div className="flex mb-2">
-          <span className="flex justify-center items-center ">รายการเบิก</span>
+          <span className="flex justify-center items-center ">รายการเบิก รหัส 1</span>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
@@ -39,37 +49,53 @@ export default function materialRent() {
                 <thead>
                   <tr>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
-                      รหัสวัสดุ
+                      รหัสผู้ยื่นคำร้อง
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
-                      ชื่อวัสดุ
+                      ชื่อผู้ยื่นคำร้อง
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
-                      จำนวน
+                      ประเภทวัสดุ
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
-                      เบิกวัสดุ
+                      เวลาที่ยื่นคำร้อง
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                      สถานะคำร้อง
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                      แสดงรายละเอียด
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td className="px-5 py-5 bg-white text-sm border-r-2 border-gray-200">
+                      <p className="text-gray-900 whitespace-no-wrap">1</p>
+                    </td>
+                    <td className="px-5 py-5 bg-white text-sm border-r-2 border-gray-200">
                       <p className="text-gray-900 whitespace-no-wrap">
-                        Frederick Nicholas
+                        abc xyz
                       </p>
                     </td>
                     <td className="px-5 py-5 bg-white text-sm border-r-2 border-gray-200">
                       <p className="text-gray-900 whitespace-no-wrap">
-                        lorem adwadnklndipanwdinawdi
+                        วัสดุสิ้นเปลือง
                       </p>
                     </td>
                     <td className="px-5 py-5 bg-white text-sm border-r-2 border-gray-200">
-                      <p className="text-gray-900 whitespace-no-wrap">6 อัน</p>
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        4/6/2022
+                      </p>
+                    </td>
+                    <td className="px-5 py-5 bg-white text-sm border-r-2 border-gray-200">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        รอดำเนินการ
+                      </p>
                     </td>
                     <td className="flex justify-center items-center px-5 py-5 bg-white text-sm ">
                       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        เบิก
+                        แสดง
                       </button>
                     </td>
                   </tr>

@@ -3,7 +3,7 @@ import { FaChartPie, FaSignOutAlt, FaShare } from "react-icons/fa";
 import Link from "next/link";
 
 export default function SideBar() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [navOpen, setNavOpen] = useState(true);
   const [subBar, setSubBar] = useState([
     { name: "dashboard", toggle: false },
@@ -189,6 +189,23 @@ export default function SideBar() {
                 <FaShare className="text-2xl"></FaShare>
                 {/* คืนวัสดุ */}
                 <h1 className={`${open ? "" : "hidden"}`}>Material Return</h1>
+              </div>
+            </div>
+          </div>
+          </Link>
+
+          {/* Request */}
+          <Link href="/materialRequest">
+          <div className="relative ">
+            <div
+              className={`flex justify-between text-gray-400 hover:text-gray-200 hover:bg-gray-800 space-x-2 rounded-md p-2 cursor-pointer ${
+                open ? "justify-start" : "sm:justify-center"
+              }`}
+            >
+              <div className="relative flex space-x-2 items-center">
+                <FaShare className="text-2xl"></FaShare>
+                {/* คืนวัสดุ */}
+                <h1 className={`${open ? "" : "hidden"}`}>Material Request</h1>
               </div>
             </div>
           </div>
