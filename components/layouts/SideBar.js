@@ -85,7 +85,7 @@ export default function SideBar() {
 
       <div
         className={`h-screen bg-gray-900 transition-all duration-75 space-y-2 fixed sm:relative ${
-          open ? "w-64" : "w-64 sm:w-20 "
+          open ? "w-64 sticky" : "w-64 sm:w-20 "
         } ${navOpen ? "top-0 left-0" : "top-0 -left-64 sm:left-0"}`}
       >
         <Link href="/">
