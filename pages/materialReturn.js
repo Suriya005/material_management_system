@@ -1,5 +1,5 @@
-import React from 'react'
-import DefaultLayout from '../components/layouts/DefaultLayout'
+import React from "react";
+import DefaultLayout from "../components/layouts/DefaultLayout";
 import { BsSearch } from "react-icons/bs";
 
 export default function materialReturn() {
@@ -25,10 +25,10 @@ export default function materialReturn() {
               <div className="flex  mx-2">
                 <input
                   type="text"
-                  className="w-full outline-none border-none drop-shadow-lg rounded-l ml-2 px-2 bg-gray-100"
+                  className="w-full outline-none border-none shadow-md rounded-l ml-2 px-2 py-1"
                   placeholder="Search"
                 />
-                <button className="flex justify-center items-center drop-shadow-lg mr-1 p-1 bg-blue-500 hover:bg-blue-700 hover:text-white rounded-r">
+                <button className="flex justify-center items-center drop-shadow-lg mr-1 py-1 px-2 bg-blue-500 hover:bg-blue-700 hover:text-white rounded-r">
                   <BsSearch></BsSearch>
                 </button>
               </div>
@@ -36,7 +36,9 @@ export default function materialReturn() {
           </div>
         </div>
         <div className="flex mb-2">
-          <span className="flex justify-center items-center ">รายการเบิก รหัส 1</span>
+          <span className="flex justify-center items-center ">
+            รายการเบิก รหัส 1
+          </span>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
@@ -180,5 +182,5 @@ export default function materialReturn() {
         </div>
       </div>
     </DefaultLayout>
-  )
+  );
 }

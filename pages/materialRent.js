@@ -17,10 +17,10 @@ export default function materialRent() {
             {/* search input */}
             <input
               type="text"
-              className="w-full outline-none border-none drop-shadow-lg rounded-l ml-2 px-2 py-1  bg-gray-100"
+              className="w-full outline-none border-none shadow-md rounded-l ml-2 px-2 py-1"
               placeholder="Search"
             />
-            <button className="flex justify-center items-center drop-shadow-lg mr-1 p-1 bg-blue-500 hover:bg-blue-700 hover:text-white rounded-r">
+            <button className="flex justify-center items-center drop-shadow-lg mr-1 py-1 px-2 bg-blue-500 hover:bg-blue-700 hover:text-white rounded-r">
               <BsSearch></BsSearch>
             </button>
           </div>
@@ -38,16 +38,16 @@ export default function materialRent() {
               <table className="min-w-full leading-normal">
                 <thead>
                   <tr>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                    <th className="w-2/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
                       รหัสวัสดุ
                     </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                    <th className="w-6/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
                       ชื่อวัสดุ
                     </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                    <th className="w-2/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
                       จำนวน
                     </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                    <th className="w-2/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
                       เบิกวัสดุ
                     </th>
                   </tr>
@@ -56,7 +56,7 @@ export default function materialRent() {
                   <tr>
                     <td className="px-5 py-5 bg-white text-sm border-r-2 border-gray-200">
                       <p className="text-gray-900 whitespace-no-wrap">
-                        Frederick Nicholas
+                        1
                       </p>
                     </td>
                     <td className="px-5 py-5 bg-white text-sm border-r-2 border-gray-200">
@@ -99,16 +99,16 @@ export default function materialRent() {
             <table className="min-w-full leading-normal">
               <thead>
                 <tr>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="w-2/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
                     รหัสวัสดุ
                   </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="w-6/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
                     ชื่อวัสดุ
                   </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="w-2/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
                     จำนวน
                   </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="w-2/12 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
                     ลบ
                   </th>
                 </tr>
