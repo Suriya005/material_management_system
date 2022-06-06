@@ -1,8 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaChartPie, FaSignOutAlt, FaShare } from "react-icons/fa";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { resetAll, setToken } from "../../redux/session";
+import useCurrentUser from "../../hooks/useCurrentUser";
 
 export default function SideBar() {
+  const { token, currentUserData, fetcherWithToken } = useCurrentUser();
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const jwt = localStorage.getItem("token");
+    if (jwt) {
+      dispatch(setToken(jwt));
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   if (token) console.log("token", token);
+  // }, [token]);
+
+  useEffect(() => {
+    if (currentUserData) {
+      fetcherWithToken("http://localhost:3001/api/v1/users").then((res) => {
+        console.log("res", res);
+      })
+    }
+  }, [currentUserData]);
+
+  const router = useRouter();
   const [open, setOpen] = useState(true);
   const [navOpen, setNavOpen] = useState(true);
   const [subBar, setSubBar] = useState([
@@ -89,13 +116,13 @@ export default function SideBar() {
         } ${navOpen ? "top-0 left-0" : "top-0 -left-64 sm:left-0"}`}
       >
         <Link href="/">
-        <h1
-          className={`text-white font-black py-4 ${
-            open ? "text-2xl px-4" : "text-xl px-4 sm:px-2"
-          }`}
-        >
-          LOGO
-        </h1>
+          <h1
+            className={`text-white font-black py-4 ${
+              open ? "text-2xl px-4" : "text-xl px-4 sm:px-2"
+            }`}
+          >
+            LOGO
+          </h1>
         </Link>
         <div className="px-4 space-y-2">
           {/* SideBar Toggle */}
@@ -162,55 +189,56 @@ export default function SideBar() {
 
           {/* Rent */}
           <Link href="/materialRent">
-          <div className="relative ">
-            <div
-              className={`flex justify-between text-gray-400 hover:text-gray-200 hover:bg-gray-800 space-x-2 rounded-md p-2 cursor-pointer ${
-                open ? "justify-start" : "sm:justify-center"
-              }`}
-            >
-              <div className="relative flex space-x-2 items-center">
-                <FaSignOutAlt className="text-2xl"></FaSignOutAlt>
-                {/* เบิกวัสดุ */}
-                <h1 className={`${open ? "" : "hidden"}`}>Material Rent</h1>
+            <div className="relative ">
+              <div
+                className={`flex justify-between text-gray-400 hover:text-gray-200 hover:bg-gray-800 space-x-2 rounded-md p-2 cursor-pointer ${
+                  open ? "justify-start" : "sm:justify-center"
+                }`}
+              >
+                <div className="relative flex space-x-2 items-center">
+                  <FaSignOutAlt className="text-2xl"></FaSignOutAlt>
+                  {/* เบิกวัสดุ */}
+                  <h1 className={`${open ? "" : "hidden"}`}>Material Rent</h1>
+                </div>
               </div>
             </div>
-          </div>
           </Link>
 
           {/* Return */}
           <Link href="/materialReturn">
-          <div className="relative ">
-            <div
-              className={`flex justify-between text-gray-400 hover:text-gray-200 hover:bg-gray-800 space-x-2 rounded-md p-2 cursor-pointer ${
-                open ? "justify-start" : "sm:justify-center"
-              }`}
-            >
-              <div className="relative flex space-x-2 items-center">
-                <FaShare className="text-2xl"></FaShare>
-                {/* คืนวัสดุ */}
-                <h1 className={`${open ? "" : "hidden"}`}>Material Return</h1>
+            <div className="relative ">
+              <div
+                className={`flex justify-between text-gray-400 hover:text-gray-200 hover:bg-gray-800 space-x-2 rounded-md p-2 cursor-pointer ${
+                  open ? "justify-start" : "sm:justify-center"
+                }`}
+              >
+                <div className="relative flex space-x-2 items-center">
+                  <FaShare className="text-2xl"></FaShare>
+                  {/* คืนวัสดุ */}
+                  <h1 className={`${open ? "" : "hidden"}`}>Material Return</h1>
+                </div>
               </div>
             </div>
-          </div>
           </Link>
 
           {/* Request */}
           <Link href="/materialRequest">
-          <div className="relative ">
-            <div
-              className={`flex justify-between text-gray-400 hover:text-gray-200 hover:bg-gray-800 space-x-2 rounded-md p-2 cursor-pointer ${
-                open ? "justify-start" : "sm:justify-center"
-              }`}
-            >
-              <div className="relative flex space-x-2 items-center">
-                <FaShare className="text-2xl"></FaShare>
-                {/* คืนวัสดุ */}
-                <h1 className={`${open ? "" : "hidden"}`}>Material Request</h1>
+            <div className="relative ">
+              <div
+                className={`flex justify-between text-gray-400 hover:text-gray-200 hover:bg-gray-800 space-x-2 rounded-md p-2 cursor-pointer ${
+                  open ? "justify-start" : "sm:justify-center"
+                }`}
+              >
+                <div className="relative flex space-x-2 items-center">
+                  <FaShare className="text-2xl"></FaShare>
+                  {/* คืนวัสดุ */}
+                  <h1 className={`${open ? "" : "hidden"}`}>
+                    Material Request
+                  </h1>
+                </div>
               </div>
             </div>
-          </div>
           </Link>
-
         </div>
 
         {/* User info */}
@@ -222,7 +250,13 @@ export default function SideBar() {
                 open ? "justify-start" : "sm:justify-center"
               }`}
             >
-              <div className="relative flex space-x-2 items-center">
+              <div
+                onClick={() => {
+                  dispatch(resetAll());
+                  router.replace("/");
+                }}
+                className="relative flex space-x-2 items-center"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -237,8 +271,9 @@ export default function SideBar() {
                     d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
                   />
                 </svg>
+
                 <div className={`flex flex-col pl-4 ${open ? "" : "hidden"}`}>
-                  <span className={`text-white text-md`}>Jhon Wick</span>
+                  <span className={`text-white text-md`}>{ currentUserData?.fname + " " + currentUserData?.lname  }</span>
                   <span className={`text-white text-sm`}>jhon@gmail.com</span>
                 </div>
               </div>

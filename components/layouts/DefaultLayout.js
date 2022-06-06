@@ -1,7 +1,14 @@
-import React from "react";
+import { useEffect } from "react";
 import SideBar from "./SideBar";
+import { useRouter } from "next/router";
 
 export default function DefaultLayout({ children }) {
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      router.replace("/login");
+    }
+  })
+  const router = useRouter();
   return (
     <>
       <div className="w-screen h-screen flex">
