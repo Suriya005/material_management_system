@@ -1,13 +1,15 @@
 import { useEffect } from "react";
 import SideBar from "./SideBar";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function DefaultLayout({ children }) {
+  const token = useSelector((state) => state.session.token);
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
+    if(!token) {
       router.replace("/login");
     }
-  })
+  }, [token]);
   const router = useRouter();
   return (
     <>
@@ -16,7 +18,6 @@ export default function DefaultLayout({ children }) {
         <div className="w-screen h-screen flex flex-col justify-between overflow-auto box-border">
           <div div className="mt-8 mx-10">
             {children}
-            
           </div>
           <div className="sticky bottom-0">
           <footer className="bg-gray-800 ">

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaChartPie, FaSignOutAlt, FaShare } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { resetAll, setToken } from "../../redux/session";
 import useCurrentUser from "../../hooks/useCurrentUser";
 
@@ -17,15 +17,11 @@ export default function SideBar() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (token) console.log("token", token);
-  // }, [token]);
-
   useEffect(() => {
     if (currentUserData) {
       fetcherWithToken("http://localhost:3001/api/v1/users").then((res) => {
         console.log("res", res);
-      })
+      });
     }
   }, [currentUserData]);
 
@@ -273,7 +269,9 @@ export default function SideBar() {
                 </svg>
 
                 <div className={`flex flex-col pl-4 ${open ? "" : "hidden"}`}>
-                  <span className={`text-white text-md`}>{ currentUserData?.fname + " " + currentUserData?.lname  }</span>
+                  <span className={`text-white text-md`}>
+                    {currentUserData?.fname + " " + currentUserData?.lname}
+                  </span>
                   <span className={`text-white text-sm`}>jhon@gmail.com</span>
                 </div>
               </div>
