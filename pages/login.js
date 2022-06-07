@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken, setUser } from "../redux/session";
+import Preloader from "../components/Preloader";
 
 export default function login() {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ export default function login() {
       router.replace("/");
     }
   }, [token]);
+  const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState("002");
   const [password, setPassword] = useState("1234");
   const router = useRouter();
@@ -34,16 +36,23 @@ export default function login() {
       }),
     });
     const data = await respone.json();
-    await dispatch(setToken(data.token));
-    await dispatch(setUser({
-      fname: data.fname,
-      lname: data.lname,
-      sex: data.sex,
-    }));
-    router.replace("/");
+    dispatch(setToken(data.token));
+    dispatch(
+      setUser({
+        fname: data.fname,
+        lname: data.lname,
+        sex: data.sex,
+      })
+    );
+    setIsLoading(true);
+    setTimeout(()=>{
+      router.replace("/");
+    },2000)
   };
 
-  return (
+  return isLoading ? (
+    <Preloader></Preloader>
+  ) : (
     <div className="flex justify-center items-center w-screen h-screen bg-sky-100">
       <div className="px-8 py-6 mt-4 text-left bg-white shadow-lg rounded-lg">
         <h3 className="text-2xl font-bold text-center">

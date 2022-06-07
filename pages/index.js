@@ -1,14 +1,17 @@
-import React from 'react'
-import DefaultLayout from '../components/layouts/DefaultLayout'
-
+import { useState, useEffect } from "react";
+import DefaultLayout from "../components/layouts/DefaultLayout";
+import Preloader from "../components/Preloader";
 
 export default function index() {
-  return (
+  const [isLoading, setIsLoading] = useState(false);
+  return isLoading ? (
+    <Preloader></Preloader>
+  ) : (
     <DefaultLayout>
-        <h1>Hello Next.js</h1>
-        <div className=" flex flex-row">
-          <div className="basis-1/2">
-            <div className="justify-center items-center">
+      <h1>Hello Next.js</h1>
+      <div className=" flex flex-row">
+        <div className="basis-1/2">
+          <div className="justify-center items-center">
             <table className="table-auto w-full">
               <thead>
                 <tr>
@@ -25,14 +28,14 @@ export default function index() {
                 </tr>
               </tbody>
             </table>
-            </div>
-          </div>
-          <div className="basis-1/2">
-            <div className="justify-center items-center">
-              <h1>test</h1>
-            </div>
           </div>
         </div>
-      </DefaultLayout>
-  )
+        <div className="basis-1/2">
+          <div className="justify-center items-center">
+            <h1>test</h1>
+          </div>
+        </div>
+      </div>
+    </DefaultLayout>
+  );
 }
