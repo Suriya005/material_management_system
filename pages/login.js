@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { setToken } from "../redux/session";
+import { setToken, setUser } from "../redux/session";
 
 export default function login() {
   const dispatch = useDispatch();
@@ -13,7 +13,6 @@ export default function login() {
   }, []);
   const token = useSelector((state) => state.session.token);
   useEffect(() => {
-    console.log("token", token);
     if (token.length > 0) {
       router.replace("/");
     }
@@ -35,7 +34,12 @@ export default function login() {
       }),
     });
     const data = await respone.json();
-    dispatch(setToken(data.token));
+    await dispatch(setToken(data.token));
+    await dispatch(setUser({
+      fname: data.fname,
+      lname: data.lname,
+      sex: data.sex,
+    }));
     router.replace("/");
   };
 

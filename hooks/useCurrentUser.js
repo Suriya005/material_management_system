@@ -53,5 +53,5 @@ export default function useCurrentUser() {
     }
   }, [userData]);
 
-  return { token, currentUserData, fetcherWithToken, fetcher };
+  return { token, currentUserData, userData, fetcherWithToken, fetcher };
 }

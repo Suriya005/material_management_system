@@ -5,9 +5,11 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { resetAll, setToken } from "../../redux/session";
 import useCurrentUser from "../../hooks/useCurrentUser";
+import { BiLogIn } from "react-icons/bi";
+import { CgProfile } from "react-icons/cg";
 
 export default function SideBar() {
-  const { token, currentUserData, fetcherWithToken } = useCurrentUser();
+  const { token, fetcherWithToken, currentUserData } = useCurrentUser();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -15,15 +17,24 @@ export default function SideBar() {
     if (jwt) {
       dispatch(setToken(jwt));
     }
+    if (token) {
+      console.log("token", token);
+    }
   }, []);
 
   useEffect(() => {
-    if (currentUserData) {
-      fetcherWithToken("http://localhost:3001/api/v1/users").then((res) => {
-        console.log("res", res);
-      });
+    console.log("currentUserData", currentUserData);
+    if (currentUserData && token) {
+      if (currentUserData.fname === undefined) {
+        dispatch(resetAll());
+        router.replace("/login");
+        window.location.reload();
+      }
+      // fetcherWithToken("http://localhost:3001/api/v1/users").then((res) => {
+      //   console.log("user", currentUserData);
+      // });
     }
-  }, [currentUserData]);
+  });
 
   const router = useRouter();
   const [open, setOpen] = useState(true);
@@ -145,6 +156,34 @@ export default function SideBar() {
             </svg>
           </button>
 
+          {/* Profile */}
+          <div className="relative ">
+            <div
+              className={`flex justify-between text-gray-400 hover:text-gray-200 space-x-2 rounded-md p-2 ${
+                open ? "justify-start" : "sm:justify-center"
+              }`}
+            >
+              <div
+                onClick={() => {
+                  dispatch(resetAll());
+                  router.replace("/");
+                }}
+                className="relative flex space-x-2 items-center"
+              >
+                <div>
+                  <CgProfile className="text-2xl"></CgProfile>
+                </div>
+
+                <div className={`flex flex-col pl-1 ${open ? "" : "hidden"}`}>
+                  <span className={`text-white text-md text-sm`}>
+                    {currentUserData?.fname + " " + currentUserData?.lname}
+                  </span>
+                  <span className={`text-white text-sm`}>jhon@gmail.com</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Home */}
           <div className="relative ">
             <div
@@ -237,12 +276,17 @@ export default function SideBar() {
           </Link>
         </div>
 
-        {/* User info */}
+        {/* Logout */}
         <div className="absolute inset-x-0 bottom-0">
-          <div className="relative ">
+          <div
+            className="relative"
+            onClick={() => {
+              dispatch(resetAll());
+              router.replace("/");
+            }}
+          >
             <div
-              onClick={() => toggle("promote")}
-              className={`flex justify-between text-gray-400 hover:text-gray-200 hover:bg-gray-800 space-x-2 rounded-md p-2 cursor-pointer ${
+              className={`flex justify-between text-gray-400 hover:text-gray-200 hover:bg-red-400 space-x-2 rounded-md p-2 cursor-pointer ${
                 open ? "justify-start" : "sm:justify-center"
               }`}
             >
@@ -253,30 +297,13 @@ export default function SideBar() {
                 }}
                 className="relative flex space-x-2 items-center"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                  />
-                </svg>
+                <BiLogIn className="text-2xl"></BiLogIn>
 
-                <div className={`flex flex-col pl-4 ${open ? "" : "hidden"}`}>
-                  <span className={`text-white text-md`}>
-                    {currentUserData?.fname + " " + currentUserData?.lname}
-                  </span>
-                  <span className={`text-white text-sm`}>jhon@gmail.com</span>
+                <div className={`flex flex-col pl-1 ${open ? "" : "hidden"}`}>
+                  <span className={`text-white text-md text-md`}>Logout</span>
                 </div>
               </div>
             </div>
-            {/* Dropdow content*/}
           </div>
         </div>
       </div>
