@@ -24,6 +24,7 @@ export default function login() {
   const router = useRouter();
 
   const handleLogin = async () => {
+    setIsLoading(true);
     const url = "http://localhost:3001/api/v1/users/login";
     const respone = await fetch(url, {
       method: "POST",
@@ -35,19 +36,18 @@ export default function login() {
         password: password,
       }),
     });
-    const data = await respone.json();
-    dispatch(setToken(data.token));
-    dispatch(
-      setUser({
-        fname: data.fname,
-        lname: data.lname,
-        sex: data.sex,
-      })
-    );
-    setIsLoading(true);
-    setTimeout(()=>{
-      router.replace("/");
-    },2000)
+    await respone.json().then((data) => {
+      dispatch(setToken(data.token));
+      // dispatch(
+      //   setUser({
+      //     fname: data.fname,
+      //     lname: data.lname,
+      //     sex: data.sex,
+      //   })
+      // );
+    });
+    
+    router.replace("/");
   };
 
   return isLoading ? (

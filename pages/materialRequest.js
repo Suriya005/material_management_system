@@ -16,14 +16,14 @@ export default function materialRequest() {
           <div className="flex basis-3/4 justify-end">
             <div className="flex justify-center items-center">
               <select className="w-full outline-none border-solid border-2 rounded-md border-black mx-2 px-2 shadow-md">
-                <option>คำร้อง เบิก/ยืม วัสดุทั้งหมด</option>
-                <option>คำร้อง ล่าสุด</option>
+                <option value={"test"}>คำร้อง เบิก/ยืม วัสดุทั้งหมด</option>
+                <option value={"test2"}>คำร้อง ล่าสุด</option>
               </select>
             </div>
             <div className="flex justify-center items-center">
               {/* search input */}
               <div className="flex  mx-2">
-              <input
+                <input
                   type="text"
                   className="w-full outline-none border-none shadow-md rounded-l ml-2 px-2 py-1"
                   placeholder="Search"
@@ -36,12 +36,13 @@ export default function materialRequest() {
           </div>
         </div>
         <div className="flex mb-2">
-          <span className="flex justify-center items-center ">รายการเบิก รหัส 1</span>
+          <span className="flex justify-center items-center ">
+            รายการเบิก รหัส 1
+          </span>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          {" "}
           {/* วัสดุทั้งหมด */}
           <div className="inline-block min-w-full shadow-md rounded-lg overflow-hidden">
             <div>
@@ -142,9 +143,7 @@ export default function materialRequest() {
               <tbody>
                 <tr>
                   <td className="px-5 py-5 bg-white text-sm border-r-2 border-gray-200">
-                    <p className="text-gray-900 whitespace-no-wrap">
-                      1
-                    </p>
+                    <p className="text-gray-900 whitespace-no-wrap">1</p>
                   </td>
                   <td className="px-5 py-5 bg-white text-sm border-r-2 border-gray-200">
                     <p className="text-gray-900 whitespace-no-wrap">

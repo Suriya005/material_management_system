@@ -16,8 +16,8 @@ export default function materialReturn() {
           <div className="flex basis-3/4 justify-end">
             <div className="flex justify-center items-center">
               <select className="w-full outline-none border-solid border-2 rounded-md border-black mx-2 px-2 shadow-md">
-                <option>คำร้อง เบิก/ยืม วัสดุทั้งหมด</option>
-                <option>คำร้อง ล่าสุด</option>
+                <option value={1}>คำร้อง เบิก/ยืม วัสดุทั้งหมด</option>
+                <option value={2}>คำร้อง ล่าสุด</option>
               </select>
             </div>
             <div className="flex justify-center items-center">
@@ -43,7 +43,6 @@ export default function materialReturn() {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          {" "}
           {/* วัสดุทั้งหมด */}
           <div className="inline-block min-w-full shadow-md rounded-lg overflow-hidden">
             <div>

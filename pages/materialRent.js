@@ -31,7 +31,7 @@ export default function materialRent() {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          {" "}
+
           {/* วัสดุทั้งหมด */}
           <div className="inline-block min-w-full shadow-md rounded-lg overflow-hidden">
             <div>

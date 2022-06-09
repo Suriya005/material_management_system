@@ -7,6 +7,10 @@ import { resetAll, setToken } from "../../redux/session";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { BiLogIn } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
+import Swal from "sweetalert2";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { HiMenuAlt3 } from "react-icons/hi";
+import { GrFormClose } from "react-icons/gr";
 
 export default function SideBar() {
   const { token, fetcherWithToken, currentUserData } = useCurrentUser();
@@ -23,18 +27,38 @@ export default function SideBar() {
   }, []);
 
   useEffect(() => {
-    console.log("currentUserData", currentUserData);
-    if (currentUserData && token) {
+    if (currentUserData) {
       if (currentUserData.fname === undefined) {
         dispatch(resetAll());
         router.replace("/login");
-        window.location.reload();
+        Swal.fire({
+          icon: "warning",
+          title: "เกินระยะเวลาการใช้งานระบบ",
+          text: "กรุณาเข้าสู่ระบบอีกครั้งเพื่อดำเนินการต่อ",
+          confirmButtonText: "ตกลง",
+        }).then((result) => {
+          if (result.value) {
+            window.location.reload();
+          }
+        });
       }
-      // fetcherWithToken("http://localhost:3001/api/v1/users").then((res) => {
-      //   console.log("user", currentUserData);
-      // });
     }
-  });
+  }, [currentUserData]);
+
+  // setInterval(() => {
+  //   if (currentUserData && token) {
+  //     if (currentUserData.fname === undefined) {
+  //       dispatch(resetAll());
+  //       router.replace("/login");
+  //       Swal.fire({
+  //         icon:"warning",
+  //         title: "กรุณาเข้าสู่ระบบ",
+  //         text: "กรุณาเข้าสู่ระบบก่อนใช้งาน",
+  //         confirmButtonText: "ตกลง",
+  //       })
+  //     }
+  //   }
+  // }, 6000);
 
   const router = useRouter();
   const [open, setOpen] = useState(true);
@@ -46,7 +70,7 @@ export default function SideBar() {
     { name: "promote", toggle: false },
   ]);
   const toggle = (tab) => {
-    subBar.map((item, index) => {
+    subBar.map((item) => {
       if (item.name === tab) {
         item.toggle = !item.toggle;
         setSubBar([...subBar]);
@@ -55,26 +79,14 @@ export default function SideBar() {
       }
     });
   };
-  const sub2Toggle = (tab, arr) => {
-    subBar.map((item, index) => {
-      if (item.name === tab) {
-        item.sub2[arr].toggle = !item.sub2[arr].toggle;
-        setSubBar([...subBar]);
-      }
-    });
-  };
 
   const activeClass = "bg-gray-800 text-gray-200";
   const expandedClass = "border-l border-gray-400 ml-4 pl-4";
   const shrinkedClass =
     "sm:absolute top-0 left-20 sm:shadow-md sm:z-10 sm:bg-gray-900 sm:rounded-md sm:p-4 border-l sm:border-none border-gray-400 ml-4 pl-4 sm:ml-0 w-28";
-  const sub_expandedClass = "border-l border-gray-400 ml-4 pl-4";
-  const sub_shrinkedClass =
-    "sm:absolute top-0 left-28 sm:shadow-md sm:z-10 sm:bg-gray-900 sm:rounded-md sm:p-4 border-l sm:border-none border-gray-400 ml-4 pl-4 sm:ml-0 w-28";
 
   return (
     <>
-      {/* <div className="h-screen mx-auto antialiased flex justify-between"> */}
       {/* Mobile Menu Toggle */}
       <button
         onClick={() => {
@@ -84,37 +96,14 @@ export default function SideBar() {
         className="sm:hidden absolute top-5 right-5 focus:outline-none"
       >
         {/* Menu Icons */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
+        <HiMenuAlt3
           className={`h-6 w-6 ${navOpen ? "hidden" : ""}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16m-7 6h7"
-          />
-        </svg>
+        ></HiMenuAlt3>
 
         {/* Close Menu */}
-        <svg
-          x-cloak
-          xmlns="http://www.w3.org/2000/svg"
+        <GrFormClose
           className={`h-6 w-6 ${navOpen ? "" : "hidden"}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
+        ></GrFormClose>
       </button>
 
       <div
@@ -140,20 +129,11 @@ export default function SideBar() {
               setNavOpen(!navOpen);
             }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
+            <MdKeyboardArrowDown
               className={`h-6 w-4 transition-all duration-300 transform text-white ${
                 open ? "rotate-90" : "-rotate-90"
               }`}
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              />
-            </svg>
+            ></MdKeyboardArrowDown>
           </button>
 
           {/* Profile */}
@@ -196,18 +176,9 @@ export default function SideBar() {
                 <FaChartPie className="text-2xl"></FaChartPie>
                 <h1 className={`${open ? "" : "hidden"}`}>Dashboard</h1>
               </div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
+              <MdKeyboardArrowDown
                 className={`h-4 w-4 ${open ? "" : "hidden"}`}
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                />
-              </svg>
+              ></MdKeyboardArrowDown>
             </div>
             {/* Dropdow content*/}
             <div
@@ -274,6 +245,23 @@ export default function SideBar() {
               </div>
             </div>
           </Link>
+
+          {/* ManageMaterial */}
+          <Link href="/manageMaterial">
+            <div className="relative ">
+              <div
+                className={`flex justify-between text-gray-400 hover:text-gray-200 hover:bg-gray-800 space-x-2 rounded-md p-2 cursor-pointer ${
+                  open ? "justify-start" : "sm:justify-center"
+                }`}
+              >
+                <div className="relative flex space-x-2 items-center">
+                  <FaShare className="text-2xl"></FaShare>
+                  {/* จัดการวัสดุ */}
+                  <h1 className={`${open ? "" : "hidden"}`}>ManageMaterial</h1>
+                </div>
+              </div>
+            </div>
+          </Link>
         </div>
 
         {/* Logout */}
@@ -281,8 +269,21 @@ export default function SideBar() {
           <div
             className="relative"
             onClick={() => {
-              dispatch(resetAll());
-              router.replace("/");
+              Swal.fire({
+                title: "Are you sure?",
+                text: "You will logout",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, logout!",
+              }).then((result) => {
+                if (result.value) {
+                  dispatch(resetAll());
+                  router.replace("/login");
+                  Swal.fire("Logout!", "You are logged out.", "success");
+                }
+              });
             }}
           >
             <div
@@ -290,13 +291,7 @@ export default function SideBar() {
                 open ? "justify-start" : "sm:justify-center"
               }`}
             >
-              <div
-                onClick={() => {
-                  dispatch(resetAll());
-                  router.replace("/");
-                }}
-                className="relative flex space-x-2 items-center"
-              >
+              <div className="relative flex space-x-2 items-center">
                 <BiLogIn className="text-2xl"></BiLogIn>
 
                 <div className={`flex flex-col pl-1 ${open ? "" : "hidden"}`}>
