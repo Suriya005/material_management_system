@@ -1,16 +1,23 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DefaultLayout from "../components/layouts/DefaultLayout";
 import { BsSearch } from "react-icons/bs";
 import useSWR from "swr";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Modal from "../components/materials/ModalEdit";
+import ReactPaginate from "react-paginate";
 
 export default function manageMaterial() {
-  const [materialData, setMaterialData] = useState(null);
+  const [materialData, setMaterialData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [totalPage, setTotalPage] = useState(0);
+  const [totalData, setTotalData] = useState(0);
   const token = useSelector((state) => state.session.token);
   const [materialType, setMaterialType] = useState("all");
   const [search, setSearch] = useState("");
+  const [editMaterial, setEditMaterial] = useState(false);
 
   const { data: materialDataReply, error } = useSWR(
     token ? `http://localhost:3001/api/v1/materials` : null,
@@ -24,7 +31,9 @@ export default function manageMaterial() {
   );
   useEffect(() => {
     if (materialDataReply) {
-      setMaterialData(materialDataReply);
+      setTotalPage(Math.ceil(materialDataReply.length / rowsPerPage));
+      setTotalData(materialDataReply.length);
+      setMaterialData(materialDataReply.slice(0, rowsPerPage));
     }
   }, [materialDataReply]);
 
@@ -53,8 +62,32 @@ export default function manageMaterial() {
       });
   };
 
-  const editMaterial = (id) => {
-    
+  const getMaterialData = async () => {
+    axios
+      .get(`http://localhost:3001/api/v1/materials`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setMaterialData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handlePageClick = async (data) => {
+    console.log(data.selected);
+
+    let currentPage = data.selected + 1;
+    setPage(currentPage);
+    setMaterialData(
+      materialDataReply.slice(
+        (currentPage - 1) * rowsPerPage,
+        currentPage * rowsPerPage
+      )
+    );
+
+
   };
 
   return (
@@ -146,12 +179,12 @@ export default function manageMaterial() {
                           </td>
                           <td className=" px-5 py-5 bg-white text-sm border-r-2 border-gray-200">
                             <div className="flex justify-center items-center">
-                              <button
-                                onClick={editMaterial(item.material_id)}
-                                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                              >
-                                แก้ไข
-                              </button>
+                              <Modal
+                                item={item}
+                                updateData={() => {
+                                  getMaterialData();
+                                }}
+                              ></Modal>
                             </div>
                           </td>
                           <td className=" px-5 py-5 bg-white text-sm ">
@@ -175,22 +208,38 @@ export default function manageMaterial() {
                   )}
                 </tbody>
               </table>
+              
             </div>
           </div>
-          <div className="flex justify-end">
-            <button className="bg-gray-100 border-gray-200 hover:bg-gray-700 hover:text-white py-2 px-4 rounded-l">
-              back
-            </button>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ">
-              1
-            </button>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ">
-              2
-            </button>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-r">
-              next
-            </button>
-          </div>
+            <ReactPaginate
+                previousLabel={"previous"}
+                nextLabel={"next"}
+                breakLabel={"..."}
+                pageCount={totalPage}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={3}
+                onPageChange={handlePageClick}
+                containerClassName={"flex justify-center items-center mt-4"}
+                pageClassName={
+                  "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-1 rounded"
+                }
+                pageLinkClassName={"text-white"}
+                previousClassName={
+                  "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-1 rounded"
+                }
+                previousLinkClassName={"text-white"}
+                nextClassName={
+                  "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                }
+                nextLinkClassName={"text-white"}
+                breakClassName={
+                  "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                }
+                breakLinkClassName={"text-white"}
+                activeClassName={
+                  "border-blue-500 hover:border-blue-700 text-blue-700 border-4"
+                }
+              />
         </div>
       </div>
     </DefaultLayout>
