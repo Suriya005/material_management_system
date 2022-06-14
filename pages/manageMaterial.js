@@ -7,6 +7,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Modal from "../components/materials/ModalEdit";
 import ReactPaginate from "react-paginate";
+import DeleteButton from "../components/materials/deleteButton";
 
 export default function manageMaterial() {
   const [materialData, setMaterialData] = useState([]);
@@ -18,6 +19,7 @@ export default function manageMaterial() {
   const [materialType, setMaterialType] = useState("all");
   const [search, setSearch] = useState("");
   const [editMaterial, setEditMaterial] = useState(false);
+  const [materialTEM, setMaterialTEM] = useState([]);
 
   const { data: materialDataReply, error } = useSWR(
     token ? `http://localhost:3001/api/v1/materials` : null,
@@ -34,6 +36,7 @@ export default function manageMaterial() {
       setTotalPage(Math.ceil(materialDataReply.length / rowsPerPage));
       setTotalData(materialDataReply.length);
       setMaterialData(materialDataReply.slice(0, rowsPerPage));
+      setMaterialTEM(materialDataReply);
     }
   }, [materialDataReply]);
 
@@ -46,7 +49,10 @@ export default function manageMaterial() {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .then((res) => {
-        setMaterialData(res.data);
+        setTotalPage(Math.ceil(res.data.length / rowsPerPage));
+        setTotalData(res.data.length);
+        setMaterialData(res.data.slice(0, rowsPerPage));
+        setMaterialTEM(res.data);
       });
   };
 
@@ -58,7 +64,10 @@ export default function manageMaterial() {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .then((res) => {
-        setMaterialData(res.data);
+        setTotalPage(Math.ceil(res.data.length / rowsPerPage));
+        setTotalData(res.data.length);
+        setMaterialData(res.data.slice(0, rowsPerPage));
+        setMaterialTEM(res.data);
       });
   };
 
@@ -68,7 +77,10 @@ export default function manageMaterial() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        setMaterialData(res.data);
+        setTotalPage(Math.ceil(res.data.length / rowsPerPage));
+        setTotalData(res.data.length);
+        setMaterialData(res.data.slice(0, rowsPerPage));
+        setMaterialTEM(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -81,13 +93,31 @@ export default function manageMaterial() {
     let currentPage = data.selected + 1;
     setPage(currentPage);
     setMaterialData(
-      materialDataReply.slice(
+      materialTEM.slice(
         (currentPage - 1) * rowsPerPage,
         currentPage * rowsPerPage
       )
     );
+  };
 
-
+  const deleteMaterial = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        axios.delete(`http://localhost:3001/api/v1/materials/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        getMaterialData();
+      }
+    });
   };
 
   return (
@@ -95,14 +125,19 @@ export default function manageMaterial() {
       <div className="flex-col mx-52">
         <div>
           <h2 className="text-2xl font-semibold leading-tight my-5 w-full">
-            Invoices
+            รายการวัสดุทั้งหมด
           </h2>
         </div>
         <div className="flex w-full mb-2">
-          <div className="flex basis-1/3">
-            <span>รายการวัสดุทั้งหมด</span>
-          </div>
-          <div className="flex basis-1/3">
+          <div className="flex basis-1/2">
+            <div className="flex flex-col">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => setEditMaterial(true)}
+              >
+                เพิ่มข้อมูล
+              </button>
+            </div>
             <div className="flex justify-center items-center">
               <select
                 onChange={(e) => {
@@ -116,7 +151,7 @@ export default function manageMaterial() {
               </select>
             </div>
           </div>
-          <div className="flex basis-1/3">
+          <div className="flex basis-1/2">
             {/* search input */}
             <input
               onChange={searchHandler}
@@ -189,9 +224,11 @@ export default function manageMaterial() {
                           </td>
                           <td className=" px-5 py-5 bg-white text-sm ">
                             <div className="flex justify-center items-center">
-                              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                ลบ
-                              </button>
+                              <DeleteButton
+                                deleteMaterial={() => {
+                                  deleteMaterial(item.material_id);
+                                }}
+                              ></DeleteButton>
                             </div>
                           </td>
                         </tr>
@@ -208,38 +245,37 @@ export default function manageMaterial() {
                   )}
                 </tbody>
               </table>
-              
             </div>
           </div>
-            <ReactPaginate
-                previousLabel={"previous"}
-                nextLabel={"next"}
-                breakLabel={"..."}
-                pageCount={totalPage}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={3}
-                onPageChange={handlePageClick}
-                containerClassName={"flex justify-center items-center mt-4"}
-                pageClassName={
-                  "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-1 rounded"
-                }
-                pageLinkClassName={"text-white"}
-                previousClassName={
-                  "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-1 rounded"
-                }
-                previousLinkClassName={"text-white"}
-                nextClassName={
-                  "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                }
-                nextLinkClassName={"text-white"}
-                breakClassName={
-                  "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                }
-                breakLinkClassName={"text-white"}
-                activeClassName={
-                  "border-blue-500 hover:border-blue-700 text-blue-700 border-4"
-                }
-              />
+          <ReactPaginate
+            previousLabel={"previous"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            pageCount={totalPage}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={1}
+            onPageChange={handlePageClick}
+            containerClassName={"flex justify-center items-center mt-4"}
+            pageClassName={
+              "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-1 rounded"
+            }
+            pageLinkClassName={"text-white"}
+            previousClassName={
+              "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 mr-1 rounded"
+            }
+            previousLinkClassName={"text-white py-2 px-4 box-border"}
+            nextClassName={
+              "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded"
+            }
+            nextLinkClassName={"text-white py-2 px-4 box-border"}
+            breakClassName={
+              "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded"
+            }
+            breakLinkClassName={"text-white py-2 px-4 box-border"}
+            activeClassName={
+              "border-blue-500 hover:border-blue-700 text-blue-700 border-4"
+            }
+          />
         </div>
       </div>
     </DefaultLayout>
