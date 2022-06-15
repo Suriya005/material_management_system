@@ -25,12 +25,13 @@ export default function manageMaterial() {
   const { data: materialDataReply, error } = useSWR(
     token ? `http://localhost:3001/api/v1/materials` : null,
     (url) =>
-      fetch(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        method: "GET",
-      }).then((res) => res.json())
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => res.data.data)
   );
   useEffect(() => {
     if (materialDataReply) {
@@ -49,11 +50,11 @@ export default function manageMaterial() {
         { search: e.target.value, materialType: materialType },
         { headers: { Authorization: `Bearer ${token}` } }
       )
-      .then((res) => {
-        setTotalPage(Math.ceil(res.data.length / rowsPerPage));
-        setTotalData(res.data.length);
-        setMaterialData(res.data.slice(0, rowsPerPage));
-        setMaterialTEM(res.data);
+      .then((res, err) => {
+        setTotalPage(Math.ceil(res.data.data.length / rowsPerPage));
+        setTotalData(res.data.data.length);
+        setMaterialData(res.data.data.slice(0, rowsPerPage));
+        setMaterialTEM(res.data.data);
       });
   };
 
@@ -65,10 +66,10 @@ export default function manageMaterial() {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .then((res) => {
-        setTotalPage(Math.ceil(res.data.length / rowsPerPage));
-        setTotalData(res.data.length);
-        setMaterialData(res.data.slice(0, rowsPerPage));
-        setMaterialTEM(res.data);
+        setTotalPage(Math.ceil(res.data.data.length / rowsPerPage));
+        setTotalData(res.data.data.length);
+        setMaterialData(res.data.data.slice(0, rowsPerPage));
+        setMaterialTEM(res.data.data);
       });
   };
 
@@ -78,10 +79,10 @@ export default function manageMaterial() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        setTotalPage(Math.ceil(res.data.length / rowsPerPage));
-        setTotalData(res.data.length);
-        setMaterialData(res.data.slice(0, rowsPerPage));
-        setMaterialTEM(res.data);
+        setTotalPage(Math.ceil(res.data.data.length / rowsPerPage));
+        setTotalData(res.data.data.length);
+        setMaterialData(res.data.data.slice(0, rowsPerPage));
+        setMaterialTEM(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -89,8 +90,6 @@ export default function manageMaterial() {
   };
 
   const handlePageClick = async (data) => {
-    console.log(data.selected);
-
     let currentPage = data.selected + 1;
     setPage(currentPage);
     setMaterialData(
