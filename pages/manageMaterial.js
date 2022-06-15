@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import Modal from "../components/materials/ModalEdit";
 import ReactPaginate from "react-paginate";
 import DeleteButton from "../components/materials/deleteButton";
+import AddMaterial from "../components/materials/ModalAdd";
 
 export default function manageMaterial() {
   const [materialData, setMaterialData] = useState([]);
@@ -131,12 +132,11 @@ export default function manageMaterial() {
         <div className="flex w-full mb-2">
           <div className="flex basis-1/2">
             <div className="flex flex-col">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => setEditMaterial(true)}
-              >
-                เพิ่มข้อมูล
-              </button>
+              <AddMaterial
+                updateData={() => {
+                  getMaterialData();
+                }}
+              ></AddMaterial>
             </div>
             <div className="flex justify-center items-center">
               <select
